@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
 })
 
 // Log in
-router.put('/logIn', async (req, res) => {
+router.post('/logIn', async (req, res) => {
   let { email, password } = req.body;
 
   // 01. 資料驗證

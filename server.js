@@ -7,7 +7,7 @@ require('dotenv').config();
 
 // Middle Ware
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 // Routes
 const userRoute = require('./routes/user');

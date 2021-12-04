@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const Orders = require('../models/Order.js');
+const auth = require('../helpers/auth.js');
 
 // create
-router.post('/create', async(req,res)=>{
+router.post('/create', auth, async(req,res)=>{
   try{
     let data = req.body;
 
@@ -23,7 +24,7 @@ router.post('/create', async(req,res)=>{
 })
 
 // get-list
-router.get('/getList', async(req,res)=>{
+router.get('/getList', auth, async(req,res)=>{
   try{
     let orders = await Orders.find({});
     res.status(200).send({
@@ -35,7 +36,7 @@ router.get('/getList', async(req,res)=>{
 })
 
 // get-item
-router.get('/getItem', async(req,res)=>{
+router.get('/getItem', auth, async(req,res)=>{
   try{
     let document = await Orders.findById({_id : req.body.id});
 
@@ -58,7 +59,7 @@ router.get('/getItem', async(req,res)=>{
 })
 
 // update
-router.patch('/update', async(req,res)=>{
+router.patch('/update', auth, async(req,res)=>{
   try{
     let document = await Orders.findByIdAndUpdate(
       { _id : req.body.id },
@@ -92,7 +93,7 @@ router.patch('/update', async(req,res)=>{
 })
 
 // delete
-router.delete('/delete', async(req,res)=>{
+router.delete('/delete', auth, async(req,res)=>{
   try{
     let document = await Orders.findOneAndDelete({_id : req.body.id});
 

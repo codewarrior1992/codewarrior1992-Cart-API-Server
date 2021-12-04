@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const Products = require('../models/Product.js');
 const uploadToS3 = require('../helpers/awsS3.js');
+const auth = require('../helpers/auth.js');
 
 // create
-router.post('/create', uploadToS3.array('photos', 5) , async(req,res)=>{
+router.post('/create', auth , uploadToS3.array('photos', 5) , async(req,res)=>{
   try{
     let formData = req.body;
     let files = req.files;
@@ -63,7 +64,7 @@ router.get('/getItem', async(req,res)=>{
 })
 
 // update
-router.patch('/update', async(req,res)=>{
+router.patch('/update', auth, async(req,res)=>{
   try{
     let document = await Products.findByIdAndUpdate(
       { _id : req.body.id},       
@@ -95,7 +96,7 @@ router.patch('/update', async(req,res)=>{
 })
 
 // delete
-router.delete('/delete', async(req,res)=>{
+router.delete('/delete', auth, async(req,res)=>{
   try{
     let document = await Products.findByIdAndDelete({_id:req.body.id});
 

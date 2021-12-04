@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors')
 const PORT = process.env.PORT || 3000;
-const cors = require('cors');
 require('dotenv').config();
 
 // Middle Ware
@@ -16,7 +16,7 @@ const orderRoute = require('./routes/order');
 
 app.use('/user', userRoute);
 app.use('/product', productRoute);
-app.use('/order', orderRoute);
+app.use('/order' , orderRoute);
 
 // Connect DB
 mongoose.connect(process.env.DB,()=>{

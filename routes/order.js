@@ -16,7 +16,7 @@ router.post('/create', auth, async(req,res)=>{
         en : 'The order is created successfully',
         jp : '注文が正常に作成されました'
       },
-      data : document
+      document
     });
   }catch(err){
     res.status(400).send({err})
@@ -85,7 +85,7 @@ router.patch('/update', auth, async(req,res)=>{
         en : 'Order updated successfully',
         jp : '注文が正常に更新されました'
       },
-      data : list,
+      list,
     })
   }catch(err){
     res.status(400).send({err})
@@ -115,7 +115,7 @@ router.delete('/delete', auth, async(req,res)=>{
         en : 'The product has been deleted',
         jp : '製品が削除されました'
       },
-      data : list
+      list
     })
   }catch(err){
     res.status(403).send({err})

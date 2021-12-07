@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
         en : 'Register Success',
         jp : 'アカウント登録の成功'
       },
-      data : user
+      user
     })
   } catch (err) {
     res.status(400).send(err);

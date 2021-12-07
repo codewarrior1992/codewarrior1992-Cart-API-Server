@@ -20,7 +20,7 @@ router.post('/create', auth , uploadToS3.array('photos', 5) , async(req,res)=>{
         en : 'The product has been created',
         jp : '製品が作成されました'
       },
-      data : document
+      document
     })
   }catch(err){
     res.status(400).send({err})
@@ -33,7 +33,7 @@ router.get('/getList', async(req,res)=>{
     let list = await Products.find({});
     res.status(200).send({
       success: true,
-      data : list
+      list
     })
   } catch(err){
     res.status(403).send({err})
@@ -56,7 +56,7 @@ router.get('/getItem', async(req,res)=>{
     
     res.status(200).send({
       success : true,
-      data : document
+      document
     })
   }catch(err){
     res.status(403).send({err})
@@ -88,7 +88,7 @@ router.patch('/update', auth, async(req,res)=>{
         en : 'The product has been upadted',
         jp : '製品は更新されました'
       },
-      data : list
+      list
     })
   }catch(err){
     res.status(400).send({err})
@@ -118,7 +118,7 @@ router.delete('/delete', auth, async(req,res)=>{
         en : 'The product has been deleted',
         jp : '製品が削除されました'
       },
-      data : list
+      list
     })
   }catch(err){
     res.status(403).send({err})

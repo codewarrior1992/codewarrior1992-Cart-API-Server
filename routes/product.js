@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Products = require('../models/Product.js');
 const uploadToS3 = require('../helpers/awsS3.js');
 const auth = require('../helpers/auth.js');
+const { productMsg : msg } = require('../helpers/i18n.js');
 
 // create
 router.post('/create', auth , uploadToS3.array('photos', 5) , async(req,res)=>{
@@ -15,11 +16,7 @@ router.post('/create', auth , uploadToS3.array('photos', 5) , async(req,res)=>{
 
     res.status(201).send({
       success: true,
-      message :　{
-        tw : '已新增產品',
-        en : 'The product has been created',
-        jp : '製品が作成されました'
-      },
+      message : msg.create,
       document
     })
   }catch(err){
@@ -47,11 +44,7 @@ router.get('/getItem', async(req,res)=>{
 
     if(!document) return res.status(403).send({
       success: false,
-      message : {
-        tw: '找不到此商品',
-        en: 'This product cannot be found',
-        jp : 'この商品が見つかりません'
-      }
+      message : msg.unfind
     })
     
     res.status(200).send({
@@ -66,31 +59,26 @@ router.get('/getItem', async(req,res)=>{
 // update
 router.patch('/update', auth, async(req,res)=>{
   try{
+    let list = await Products.find({})
     let document = await Products.findByIdAndUpdate(
       { _id : req.body.id},       
       { $set: req.body},
       { new : false, upsert : false }
     )
+    
 
     if(!document) return res.status(403).send({
       success: false,
-      message : {
-        tw: '找不到此商品',
-        en: 'This product cannot be found',
-        jp : 'この商品が見つかりません'
-      }
+      message : msg.unfind
     })
 
     res.status(200).send({
       success:true,
-      message : {
-        tw : '商品已經更新',
-        en : 'The product has been upadted',
-        jp : '製品は更新されました'
-      },
+      message : msg.update,
       list
     })
   }catch(err){
+    console.log(err);
     res.status(400).send({err})
   }
 })
@@ -102,22 +90,14 @@ router.delete('/delete', auth, async(req,res)=>{
 
     if(!document) res.status(403).send({
       success : false,
-      message : {
-        tw : '找不到此商品',
-        en : 'This product cannot be found',
-        jp : 'この商品が見つかりません'
-      }
+      message : msg.unfind
     })
 
     let list = await Products.find({});
 
     res.status(200).send({
       success : true,
-      message : {
-        tw : '商品已經刪除',
-        en : 'The product has been deleted',
-        jp : '製品が削除されました'
-      },
+      message : msg.delete,
       list
     })
   }catch(err){

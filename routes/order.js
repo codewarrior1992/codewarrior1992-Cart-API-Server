@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Orders = require('../models/Order.js');
 const auth = require('../helpers/auth.js');
+const { orderMsg : msg } = require('../helpers/i18n.js');
 
 // create
 router.post('/create', auth, async(req,res)=>{
@@ -11,11 +12,7 @@ router.post('/create', auth, async(req,res)=>{
 
     res.status(201).send({
       success : true,
-      message :{
-        tw : '訂單建立成功',
-        en : 'The order is created successfully',
-        jp : '注文が正常に作成されました'
-      },
+      message : msg.create,
       document
     });
   }catch(err){
@@ -26,9 +23,9 @@ router.post('/create', auth, async(req,res)=>{
 // get-list
 router.get('/getList', auth, async(req,res)=>{
   try{
-    let orders = await Orders.find({});
+    let list = await Orders.find({});
     res.status(200).send({
-      orders
+      list
     })
   } catch(err){
     res.status(403).send({err})
@@ -42,11 +39,7 @@ router.get('/getItem', auth, async(req,res)=>{
 
     if(!document) return res.status(403).send({
       success: false,
-      message : {
-        tw: '找不到此訂單',
-        en: 'This order cannot be found',
-        jp : 'この注文が見つかりません'
-      }
+      message : msg.unfind,
     })
 
     res.status(200).send({
@@ -69,22 +62,14 @@ router.patch('/update', auth, async(req,res)=>{
 
     if(!document) return res.status(403).send({
       success: false,
-      message : {
-        tw: '找不到此訂單',
-        en: 'This order cannot be found',
-        jp : 'この注文が見つかりません'
-      }
+      message : msg.unfind
     })
 
     let list = await Orders.find({});
 
     res.status(200).send({
       success : true,
-      message :{
-        tw : '訂單更新成功',
-        en : 'Order updated successfully',
-        jp : '注文が正常に更新されました'
-      },
+      message : msg.update,
       list,
     })
   }catch(err){
@@ -99,22 +84,14 @@ router.delete('/delete', auth, async(req,res)=>{
 
     if(!document) res.status(403).send({
       success : false,
-      message : {
-        tw : '找不到此訂單',
-        en : 'This order cannot be found',
-        jp : 'この注文が見つかりません'
-      }
+      message : msg.unfind
     })
 
     let list = await Orders.find({});
 
     res.status(200).send({
       success : true,
-      message : {
-        tw : '商品已經刪除',
-        en : 'The product has been deleted',
-        jp : '製品が削除されました'
-      },
+      message : msg.delete,
       list
     })
   }catch(err){

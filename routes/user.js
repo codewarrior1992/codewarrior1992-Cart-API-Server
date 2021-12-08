@@ -2,7 +2,8 @@ const router = require('express').Router();
 const User = require('../models/User.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { registerValidation, loginValidation } = require('../helpers/validation.js');
+const { registerValidation, loginValidation } = require('../helpers/validation/main.js');
+const { userMsg : msg } = require('../helpers/i18n.js');
 
 // Register
 router.post('/register', async (req, res) => {
@@ -18,11 +19,7 @@ router.post('/register', async (req, res) => {
     if (emailExit) return res.status(403).send(
       {
         success : false,
-        message : {
-          tw : '帳號已經被註冊',
-          en : 'This email has been registered',
-          jp : 'This account has been registered'
-        }
+        message : msg.repeat
       }
     );
 
@@ -32,11 +29,7 @@ router.post('/register', async (req, res) => {
     let user = await User({ email, password: hashPassowrd }).save();
     res.status(201).send({
       success : true,
-      message : {
-        tw : '帳號註冊成功',
-        en : 'Register Success',
-        jp : 'アカウント登録の成功'
-      },
+      message : msg.register,
       user
     })
   } catch (err) {
@@ -57,11 +50,7 @@ router.post('/logIn', async (req, res) => {
     let user = await User.findOne({ email });
     if (!user) return res.status(403).send({
       success : false,
-      message : {
-        tw : '找不到此帳號',
-        en : 'Can not find this account',
-        jp : 'このアカウントが見つかりません',
-      },
+      message : msg.unfind
     });
 
     // 03. 密碼解密
@@ -69,11 +58,7 @@ router.post('/logIn', async (req, res) => {
     let decode = await bcrypt.compareSync(password, hash);
     if (!decode) res.status(403).send({
       success : false,
-      message : {
-        tw : '密碼錯誤',
-        en : 'The password was incorrect',
-        jp : 'パスワードが間違っていた',
-      },
+      message : msg.passErr
     });
 
     // 04. 新增 access_token
@@ -84,11 +69,7 @@ router.post('/logIn', async (req, res) => {
 
     res.status(201).send({
       success : true,
-      message : {
-        tw : '登入成功',
-        en : 'Login Success',
-        jp : 'ログイン成功'
-      },
+      message : msg.logIn,
       user,
     })
   } catch(err){
@@ -106,11 +87,7 @@ router.patch('/logOut',async(req,res)=>{
     )
     res.status(200).send({
       success : true,
-      message : {
-        tw : '登出成功',
-        en : 'Log out success',
-        jp : 'ログアウト成功'
-      },
+      message : msg.logOut,
       user,
     })
   } catch(err){

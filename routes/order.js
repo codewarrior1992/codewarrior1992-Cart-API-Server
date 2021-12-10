@@ -33,9 +33,9 @@ router.get('/getList', auth, async(req,res)=>{
 })
 
 // get-item
-router.get('/getItem', auth, async(req,res)=>{
+router.get('/getItem/:id', auth, async(req,res)=>{
   try{
-    let document = await Orders.findById({_id : req.body.id});
+    let document = await Orders.findById({_id : req.params.id});
 
     if(!document) return res.status(403).send({
       success: false,

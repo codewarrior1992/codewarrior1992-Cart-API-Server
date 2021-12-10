@@ -38,9 +38,9 @@ router.get('/getList', async(req,res)=>{
 })
 
 // get-item
-router.get('/getItem', async(req,res)=>{
+router.get('/getItem/:id', async(req,res)=>{
   try{
-    let document = await Products.findById({_id : req.body.id});
+    let document = await Products.findById({_id : req.params.id});
 
     if(!document) return res.status(403).send({
       success: false,
@@ -65,7 +65,6 @@ router.patch('/update', auth, async(req,res)=>{
       { $set: req.body},
       { new : false, upsert : false }
     )
-    
 
     if(!document) return res.status(403).send({
       success: false,

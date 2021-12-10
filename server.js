@@ -7,6 +7,7 @@ require('dotenv').config();
 
 // Middle Ware
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
 // Routes

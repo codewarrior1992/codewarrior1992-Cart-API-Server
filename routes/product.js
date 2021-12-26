@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Products = require('../models/Product.js');
 const uploadToS3 = require('../helpers/awsS3.js');
 const auth = require('../helpers/auth.js');
-const { productMsg : msg } = require('../helpers/i18n.js');
+const { productMsg : msg } = require('../helpers/apiMsg.js');
 
 // create
 router.post('/create', auth , uploadToS3.array('photos', 5) , async(req,res)=>{
@@ -57,13 +57,21 @@ router.get('/getItem/:id', async(req,res)=>{
 })
 
 // update
-router.patch('/update', auth, async(req,res)=>{
+router.patch('/update/:id', auth, uploadToS3.array('photos', 5), async(req,res)=>{
   try{
     let list = await Products.find({})
+    let formData = req.body 
+    let files = req.files;
+    
+    if(files.length !== 0){
+      let imgUrls =  files.map((file)=>  file.location );
+      formData.imgUrls = imgUrls;
+    }
+
     let document = await Products.findByIdAndUpdate(
-      { _id : req.body.id},       
-      { $set: req.body},
-      { new : false, upsert : false }
+      { _id : req.params.id},       
+      { $set: formData},
+      { new : true, upsert : false }
     )
 
     if(!document) return res.status(403).send({
@@ -76,16 +84,17 @@ router.patch('/update', auth, async(req,res)=>{
       message : msg.update,
       list
     })
+
   }catch(err){
-    console.log(err);
+
     res.status(400).send({err})
   }
 })
 
 // delete
-router.delete('/delete', auth, async(req,res)=>{
+router.delete('/delete/:id', auth, async(req,res)=>{
   try{
-    let document = await Products.findByIdAndDelete({_id:req.body.id});
+    let document = await Products.findByIdAndDelete({_id : req.params.id});
 
     if(!document) res.status(403).send({
       success : false,

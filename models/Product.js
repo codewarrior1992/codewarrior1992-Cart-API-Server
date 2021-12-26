@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema({
   imgUrls:{
     type: Array,
   },
+  qty:{
+    type : Number,
+    default : 1
+  }
 })
 
 module.exports = mongoose.model('products', productSchema)

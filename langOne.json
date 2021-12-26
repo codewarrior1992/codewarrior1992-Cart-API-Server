@@ -1,0 +1,41 @@
+{
+  "navbar":{
+    "home":{
+      "tw":"首頁",
+      "en":"Home",
+      "jp":"ホームページ"
+    },
+    "list":{
+      "tw":"產品",
+      "en":"Product",
+      "jp":"製品リスト"
+    },
+    "checkout":{
+      "tw":"結帳",
+      "en":"Check Out",
+      "jp":"チェックアウト"
+    },
+    "admin":{
+      "tw":"後臺管理",
+      "en":"Admin",
+      "jp":"運営"
+    },
+    "logout":{
+      "tw":"登出",
+      "en":"logout",
+      "jp":"ログアウト"
+    }
+  },
+  "home":{
+    "main":{
+      "tw":"歡迎來到購物車作品",
+      "en":"Welcome , here is for cart demo",
+      "jp":"ようこそ、カートのデモです"
+    },
+    "subs":{
+      "tw":"好吃好拿又好玩",
+      "en":"Have a lot of fun here",
+      "jp":"ここでたくさん楽しんでください"
+    }
+  }
+}

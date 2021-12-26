@@ -3,7 +3,7 @@ const User = require('../models/User.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { registerValidation, loginValidation } = require('../helpers/validation/main.js');
-const { userMsg : msg } = require('../helpers/i18n.js');
+const { userMsg : msg } = require('../helpers/apiMsg.js');
 
 // Register
 router.post('/register', async (req, res) => {
@@ -78,7 +78,7 @@ router.post('/logIn', async (req, res) => {
 })
 
 // Log out
-router.patch('/logOut',async(req,res)=>{
+router.patch('/logOut', async(req,res)=>{
   try{
     let user = await User.findOneAndUpdate(
       { _id : req.body.id},

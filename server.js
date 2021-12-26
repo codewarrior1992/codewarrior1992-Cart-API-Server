@@ -14,10 +14,16 @@ app.use(cors());
 const userRoute = require('./routes/user');
 const productRoute = require('./routes/product');
 const orderRoute = require('./routes/order');
+const cartRoute = require('./routes/cart');
+const wishRoute = require('./routes/wish');
+const langRoute = require('./routes/lang');
 
 app.use('/user', userRoute);
 app.use('/product', productRoute);
 app.use('/order' , orderRoute);
+app.use('/cart' , cartRoute);
+app.use('/wish' , wishRoute);
+app.use('/lang' , langRoute);
 
 // Connect DB
 mongoose.connect(process.env.DB,()=>{

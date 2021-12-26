@@ -1,19 +1,45 @@
 const router = require('express').Router();
 const Orders = require('../models/Order.js');
+const Carts = require('../models/Cart.js');
 const auth = require('../helpers/auth.js');
-const { orderMsg : msg } = require('../helpers/i18n.js');
+const { orderMsg : msg } = require('../helpers/apiMsg.js');
 
 // create
 router.post('/create', auth, async(req,res)=>{
-  try{
-    let data = req.body;
+  try{   
+    let { user, coupon } = req.body;
 
+    let target = await Carts.findOne({user : user._id});
+
+    let calculated = await Carts.aggregate([
+      { $match : { user : user._id }},
+      { $unwind: "$cart" },
+      { 
+        $group :{ 
+          _id : "$cart._id",
+          totalAmount: { $sum: { $multiply: [ "$cart.price", "$cart.qty" ] } },
+        }
+      },
+    ])
+    
+    let total = calculated.reduce((pre, next) => pre.totalAmount + next.totalAmount);
+    console.log(calculated)
+
+    let data = {
+      user : user,
+      products : target.cart,
+      original_price : total,
+      discount_price : coupon == true ? total = total * 0.8 : 0,
+      coupon : coupon
+    }
     let document = await Orders(data).save();
+
+    await Carts.findOneAndRemove({user:user._id});
 
     res.status(201).send({
       success : true,
       message : msg.create,
-      document
+      document,
     });
   }catch(err){
     res.status(400).send({err})
@@ -52,10 +78,10 @@ router.get('/getItem/:id', auth, async(req,res)=>{
 })
 
 // update
-router.patch('/update', auth, async(req,res)=>{
+router.patch('/update/:id', auth, async(req,res)=>{
   try{
     let document = await Orders.findByIdAndUpdate(
-      { _id : req.body.id },
+      { _id : req.params.id },
       { $set : { status : req.body.status} },
       { new:false, upsert: false }
     )
@@ -78,9 +104,9 @@ router.patch('/update', auth, async(req,res)=>{
 })
 
 // delete
-router.delete('/delete', auth, async(req,res)=>{
+router.delete('/delete/:id', auth, async(req,res)=>{
   try{
-    let document = await Orders.findOneAndDelete({_id : req.body.id});
+    let document = await Orders.findByIdAndDelete({_id : req.params.id});
 
     if(!document) res.status(403).send({
       success : false,

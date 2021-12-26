@@ -75,4 +75,38 @@ module.exports = {
       jp : '製品が削除されました'
     }
   },
+  cartMsg : {
+    create:{
+      tw : '已新增至購物車',
+      en : 'This item has been added to the shopping cart',
+      jp : 'ショッピングカートに追加されました'
+    },
+    delete:{
+      tw : '該產品已從購物車刪除',
+      en : 'This item has been deleted from the shopping cart',
+      jp : 'このアイテムはショッピングカートから削除されました'
+    },
+    coupon_success : {
+      tw : '優惠券套用成功',
+      en : 'Coupon successfully applied',
+      jp : 'クーポンの適用に成功'
+    },
+    coupon_fail : {
+      tw : '優惠券套用失敗',
+      en : 'Failed to apply coupon',
+      jp : 'クーポンの適用に失敗しました'
+    }
+  },
+  wishMsg : {
+    create:{
+      tw : '已新增至願望清單',
+      en : 'This item has been added to the wish list',
+      jp : 'このアイテムはウィッシュリストに追加されました'
+    },
+    delete:{
+      tw : '該產品已從願望清單刪除',
+      en : 'This item has been deleted from the wish list',
+      jp : 'このアイテムはウィッシュリストから削除されました'
+    }
+  }
 }
